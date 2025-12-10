@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Reglamento - Torneo FIFA</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 20px;
+    background-color: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh; /* Altura completa móvil */
+    color: #e0e0e0;
+    text-align: center;
+  }
+
+  h1 {
+    color: #d4af37;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-size: 28px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+
+  /* Contenedor tipo "Papel de vidrio" */
+  .rules-container {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 20px;
+    padding: 25px;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: left; /* Texto alineado a la izquierda para leer mejor */
+  }
+
+  h2 {
+    color: #ffce47;
+    font-size: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-top: 0;
+  }
+
+  /* Estilos de Lista */
+  ul {
+    padding-left: 20px;
+    margin-bottom: 25px;
+  }
+  li {
+    margin-bottom: 10px;
+    line-height: 1.4;
+    font-size: 15px;
+  }
+  li::marker { color: #d4af37; }
+
+  /* Tabla de Puntos */
+  .points-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .points-table th, .points-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .points-table th {
+    background-color: rgba(212, 175, 55, 0.2);
+    color: #d4af37;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  .points-table tr:last-child td { border-bottom: none; }
+  .points-val { font-weight: bold; color: #fff; font-size: 18px; }
+
+  /* Botón Volver */
+  .back-btn {
+    display: inline-block;
+    background: #d4af37;
+    color: #1a1a1a;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+  }
+  .back-btn:active { transform: scale(0.95); }
+
+</style>
+</head>
+<body>
+
+  <h1>Reglamento Oficial</h1>
+
+  <div class="rules-container">
+    
+    <h2>🏆 Sistema de Puntos</h2>
+    <table class="points-table">
+        <tr>
+            <th>Resultado</th>
+            <th>Puntos</th>
+        </tr>
+        <tr>
+            <td>Victoria</td>
+            <td class="points-val">+3</td>
+        </tr>
+        <tr>
+            <td>Empate</td>
+            <td class="points-val">+1</td>
+        </tr>
+        <tr>
+            <td>Derrota</td>
+            <td class="points-val">0</td>
+        </tr>
+        <tr>
+            <td>Abandono (Rage Quit)</td>
+            <td class="points-val">-1</td>
+        </tr>
+    </table>
+
+    <br><br>
+
+    <h2>⚠️ Reglas de Convivencia</h2>
+    <ul>
+        <li><strong>Prohibido hacer tiempo:</strong> Si vas ganando y tocas atrás los últimos 10 min, es penalización.</li>
+        <li><strong>Pausas:</strong> Máximo 2 pausas por partido y solo cuando el balón esté parado.</li>
+        <li><strong>Equipos:</strong> Solo se permiten clubes, nada de selecciones (o lo que ustedes decidan).</li>
+        <li><strong>Gritos:</strong> Se permite gritar los goles en la cara, pero sin contacto físico.</li>
+        <li><strong>VAR:</strong> No hay VAR, lo que cobra la máquina es sagrado (aunque sea robo).</li>
+    </ul>
+
+  </div>
+
+  <a href="index.html" class="back-btn">Volver al Inicio</a>
+
+</body>
+</html>
