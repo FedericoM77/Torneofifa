@@ -2,82 +2,161 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Torneo FIFA - Selección de Jugador</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Torneo FIFA - Inicio</title>
 <style>
+  * { box-sizing: border-box; }
+
   body {
     margin: 0;
-    padding: 0;
+    padding: 20px; /* Margen de seguridad para que nada pegue en los bordes */
     background-color: #121212;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    /* Usamos dvh para que se adapte a las barras del navegador móvil */
+    min-height: 100dvh; 
     color: #d4af37;
     text-align: center;
+    /* Permitimos scroll si la pantalla es muy pequeña verticalmente */
+    overflow-y: auto; 
+    overflow-x: hidden;
   }
+
+  /* Animación de entrada suave */
+  .fade-in { animation: fadeIn 0.8s ease-in forwards; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
   h1 {
-    font-size: 40px;
+    /* El tamaño de letra se adapta: mínimo 30px, preferido 8% del ancho, máximo 45px */
+    font-size: clamp(30px, 8vw, 45px);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 40px;
-    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+    letter-spacing: 3px;
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+    line-height: 1.2;
+    width: 100%;
   }
 
-  .logo-area {
-      font-size: 60px;
-      margin-bottom: 20px;
+  .subtitle {
+      font-size: 16px;
+      color: #fff;
+      opacity: 0.8;
+      margin-bottom: 40px;
+      max-width: 90%;
+      line-height: 1.5;
   }
 
+  .logo-area { 
+      font-size: 80px; 
+      margin-bottom: 20px; 
+      animation: bounce 2s infinite; 
+  }
+  @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+  }
+
+  /* --- BOTONES --- */
   .menu-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    width: 80%;
-    max-width: 300px;
+    gap: 15px;
+    width: 100%;
+    max-width: 340px; /* Ancho máximo para que no se vea gigante en Tablet/PC */
+    padding-bottom: 20px; /* Espacio extra abajo para scrolling */
   }
 
-  .player-btn {
-    background: linear-gradient(90deg, #b88a1e, #ffce47);
+  /* Botón Principal (Con efectos táctiles) */
+  .main-btn {
+    background: linear-gradient(135deg, #b88a1e, #ffce47, #b88a1e);
+    background-size: 200% auto;
     border: none;
-    padding: 15px 20px;
-    font-size: 18px;
-    font-weight: bold;
+    padding: 20px 30px; /* Botón grande para dedos */
+    font-size: 20px;
+    font-weight: 800;
     color: #1a1a1a;
     text-transform: uppercase;
-    border-radius: 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    transition: transform 0.1s, box-shadow 0.1s; /* Transición rápida para tacto */
+    animation: shine 3s infinite linear;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: transform 0.2s;
-    display: block; /* Para que funcione como bloque */
+    touch-action: manipulation; /* Mejora la respuesta al toque */
+    -webkit-tap-highlight-color: transparent; /* Quita el recuadro azul en Android */
+  }
+  
+  /* Efecto al presionar con el dedo */
+  .main-btn:active { transform: scale(0.95); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+
+  /* Botones de Jugadores */
+  .player-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid #d4af37;
+    padding: 18px; /* Buena zona de toque */
+    font-size: 18px;
+    font-weight: bold;
+    color: #d4af37;
+    text-transform: uppercase;
+    border-radius: 15px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.1s;
+    display: block;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Efecto al presionar */
+  .player-btn:active {
+    background: #d4af37;
+    color: #1a1a1a;
+    transform: scale(0.98);
   }
 
-  .player-btn:hover {
-    transform: scale(1.05);
-    background: #fff;
-  }
+  /* ESTADOS */
+  .hidden { display: none !important; }
 
-  p { opacity: 0.6; margin-top: 50px; font-size: 12px; }
-
+  @keyframes shine { to { background-position: 200% center; } }
 </style>
+
+<script>
+    function mostrarJugadores() {
+        // Efecto de vibración si el celular lo permite (Feedback háptico)
+        if (navigator.vibrate) { navigator.vibrate(50); }
+
+        document.getElementById('seccion-bienvenida').classList.add('hidden');
+        document.getElementById('seccion-lista').classList.remove('hidden');
+        document.getElementById('seccion-lista').classList.add('fade-in');
+    }
+</script>
 </head>
 <body>
 
-  <div class="logo-area">🏆</div>
-  
-  <h1>Torneo FIFA<br>Virgolandia 2025</h1>
+  <div id="seccion-bienvenida" style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+      <div class="logo-area">🏆</div>
+      
+      <h1>Torneo FIFA<br>Virgolandia 2025</h1>
+      
+      <p class="subtitle">Presentación Oficial de los Candidatos al Título</p>
 
-  <div class="menu-container">
-    <a href="luciano.html" class="player-btn">Ver a LUCIANO</a>
-    
-    <a href="colo.html" class="player-btn">Ver a EL COLO</a>
-    
-    </div>
+      <button onclick="mostrarJugadores()" class="main-btn">
+          Conocer Jugadores
+      </button>
+  </div>
 
-  <p>Selecciona un jugador para ver su carta</p>
+
+  <div id="seccion-lista" class="hidden menu-container">
+      <h2 style="margin-bottom: 25px; text-transform: uppercase; font-size: 24px;">Selecciona tu Guerrero</h2>
+      
+      <a href="luciano.html" class="player-btn">LUCIANO</a>
+      <a href="colo.html" class="player-btn">EL COLO</a>
+      <a href="facu.html" class="player-btn">FACU</a>
+      <a href="fede.html" class="player-btn">FEDE</a>
+
+      <p style="margin-top: 30px; font-size: 11px; opacity: 0.5;">EA SPORTS - IT'S IN THE GAME</p>
+  </div>
 
 </body>
 </html>
