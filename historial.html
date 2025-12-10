@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Historial Mano a Mano</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 20px;
+    background-color: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+    color: #e0e0e0;
+  }
+
+  h1 {
+    color: #d4af37;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+    font-size: 24px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+
+  /* --- ACORDEÓN (BOTONES) --- */
+  .accordion {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #d4af37;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    max-width: 600px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.4s;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-transform: uppercase;
+  }
+
+  .accordion.active, .accordion:hover {
+    background-color: rgba(212, 175, 55, 0.15);
+    border-color: #d4af37;
+  }
+
+  .accordion:after {
+    content: '\002B'; /* + */
+    color: #fff;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+    font-size: 20px;
+  }
+
+  .accordion.active:after {
+    content: "\2212"; /* - */
+  }
+
+  /* --- PANEL DESPLEGABLE --- */
+  .panel {
+    padding: 0 15px;
+    background-color: rgba(0, 0, 0, 0.3);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 10px;
+    border-radius: 0 0 10px 10px;
+    border-left: 1px solid rgba(255,255,255,0.05);
+    border-right: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* --- RESUMEN DE ESTADÍSTICAS --- */
+  .stats-summary {
+    display: flex;
+    justify-content: space-between; /* Espaciado mejorado */
+    align-items: flex-start; /* Alinear arriba para que entren los goles */
+    background: rgba(255,255,255,0.05);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat-item { 
+      text-align: center; 
+      flex: 1; /* Distribuye espacio */
+  }
+  .stat-num { font-size: 26px; font-weight: 800; display: block; line-height: 1; margin-bottom: 5px;}
+  .stat-label { font-size: 11px; text-transform: uppercase; opacity: 0.8; font-weight: bold; display: block; margin-bottom: 4px; }
+  
+  /* NUEVO ESTILO PARA LOS GOLES */
+  .goals-count {
+      font-size: 10px;
+      background: rgba(255,255,255,0.1);
+      padding: 3px 6px;
+      border-radius: 4px;
+      color: #ccc;
+      display: inline-block;
+  }
+  
+  .win { color: #4caf50; }
+  .draw { color: #9e9e9e; }
+  .loss { color: #f44336; }
+
+  /* --- TABLA DE PARTIDOS --- */
+  .match-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+  .match-table th {
+    text-align: center;
+    color: #d4af37;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+  .match-table td {
+    padding: 12px 5px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    text-align: center;
+    vertical-align: middle;
+  }
+  .team-name { font-size: 11px; opacity: 0.7; display: block; margin-top: 4px; color: #ccc;}
+  .score-box { 
+      background: #1a1a1a; 
+      padding: 6px 12px; 
+      border-radius: 6px; 
+      font-weight: bold; 
+      border: 1px solid #333;
+      white-space: nowrap;
+      font-size: 14px;
+  }
+
+  /* Botón Volver */
+  .back-btn {
+    margin-top: 30px;
+    margin-bottom: 50px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.7;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+  }
+  .back-btn:hover { opacity: 1; border-color: #fff; }
+
+</style>
+</head>
+<body>
+
+  <h1>Historial Mano a Mano</h1>
+
+  <button class="accordion">FEDE vs RODRIGO</button>
+  <div class="panel">
+      <div class="stats-summary">
+          <div class="stat-item">
+              <span class="stat-num win">2</span>
+              <span class="stat-label">Fede</span>
+              <span class="goals-count">⚽ 14</span>
+          </div>
+          <div class="stat-item" style="padding-top: 5px;">
+              <span class="stat-num draw">1</span>
+              <span class="stat-label">Empate</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-num win">1</span>
+              <span class="stat-label">Rodri</span>
+              <span class="goals-count">⚽ 9</span>
+          </div>
+      </div>
+      <table class="match-table">
+          <thead>
+              <tr> <th width="35%">Fede</th> <th width="30%">Global</th> <th width="35%">Rodri</th> </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">Liverpool</span></td>
+                  <td><span class="score-box">4 - 2</span></td>
+                  <td><strong>Rodri</strong><span class="team-name">Barcelona</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">M. City</span></td>
+                  <td><span class="score-box">4 - 0</span></td>
+                  <td><strong>Rodri</strong><span class="team-name">R. Madrid</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">M. City</span></td>
+                  <td><span class="score-box">3 - 3</span></td>
+                  <td><strong>Rodri</strong><span class="team-name">R. Madrid</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">M. City</span></td>
+                  <td><span class="score-box">3 - 4</span></td>
+                  <td><strong>Rodri</strong><span class="team-name">R. Madrid</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+
+  <button class="accordion">FEDE vs LUCIANO</button>
+  <div class="panel">
+      <div class="stats-summary">
+          <div class="stat-item">
+              <span class="stat-num win">3</span>
+              <span class="stat-label">Fede</span>
+              <span class="goals-count">⚽ 14</span>
+          </div>
+          <div class="stat-item" style="padding-top: 5px;">
+              <span class="stat-num draw">0</span>
+              <span class="stat-label">Empate</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-num loss">0</span>
+              <span class="stat-label">Lucho</span>
+              <span class="goals-count">⚽ 7</span>
+          </div>
+      </div>
+      <table class="match-table">
+          <thead><tr><th width="35%">Fede</th><th width="30%">Global</th><th width="35%">Lucho</th></tr></thead>
+          <tbody>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">Liverpool</span></td>
+                  <td><span class="score-box">4 - 2</span></td>
+                  <td><strong>Lucho</strong><span class="team-name">PSG</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">M. City</span></td>
+                  <td><span class="score-box">3 - 2</span></td>
+                  <td><strong>Lucho</strong><span class="team-name">Liverpool</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">M. City</span></td>
+                  <td><span class="score-box">7 - 3</span></td>
+                  <td><strong>Lucho</strong><span class="team-name">Liverpool</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+
+  <button class="accordion">FEDE vs FACU</button>
+  <div class="panel">
+      <div class="stats-summary">
+          <div class="stat-item">
+              <span class="stat-num win">3</span>
+              <span class="stat-label">Fede</span>
+              <span class="goals-count">⚽ 15</span>
+          </div>
+          <div class="stat-item" style="padding-top: 5px;">
+              <span class="stat-num draw">0</span>
+              <span class="stat-label">Empate</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-num loss">0</span>
+              <span class="stat-label">Facu</span>
+              <span class="goals-count">⚽ 5</span>
+          </div>
+      </div>
+      <table class="match-table">
+          <thead><tr><th width="35%">Fede</th><th width="30%">Global</th><th width="35%">Facu</th></tr></thead>
+          <tbody>
+               <tr>
+                  <td><strong>Fede</strong><span class="team-name">Liverpool</span></td>
+                  <td><span class="score-box">7 - 3</span></td>
+                  <td><strong>Facu</strong><span class="team-name">R. Madrid</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">M. City</span></td>
+                  <td><span class="score-box">3 - 1</span></td>
+                  <td><strong>Facu</strong><span class="team-name">PSG</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Fede</strong><span class="team-name">M. City</span></td>
+                  <td><span class="score-box">5 - 1</span></td>
+                  <td><strong>Facu</strong><span class="team-name">PSG</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+
+  <button class="accordion">RODRIGO vs LUCIANO</button>
+  <div class="panel">
+       <div class="stats-summary">
+          <div class="stat-item">
+              <span class="stat-num win">2</span>
+              <span class="stat-label">Rodri</span>
+              <span class="goals-count">⚽ 9</span>
+          </div>
+          <div class="stat-item" style="padding-top: 5px;">
+              <span class="stat-num draw">1</span>
+              <span class="stat-label">Empate</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-num loss">0</span>
+              <span class="stat-label">Lucho</span>
+              <span class="goals-count">⚽ 5</span>
+          </div>
+      </div>
+      <table class="match-table">
+          <thead><tr><th width="35%">Rodri</th><th width="30%">Global</th><th width="35%">Lucho</th></tr></thead>
+          <tbody>
+               <tr>
+                  <td><strong>Rodri</strong><span class="team-name">Barcelona</span></td>
+                  <td><span class="score-box">2 - 2</span></td>
+                  <td><strong>Lucho</strong><span class="team-name">PSG</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Rodri</strong><span class="team-name">R. Madrid</span></td>
+                  <td><span class="score-box">4 - 1</span></td>
+                  <td><strong>Lucho</strong><span class="team-name">Liverpool</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Rodri</strong><span class="team-name">R. Madrid</span></td>
+                  <td><span class="score-box">3 - 2</span></td>
+                  <td><strong>Lucho</strong><span class="team-name">Liverpool</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+
+  <button class="accordion">RODRIGO vs FACU</button>
+  <div class="panel">
+      <div class="stats-summary">
+          <div class="stat-item">
+              <span class="stat-num win">1</span>
+              <span class="stat-label">Rodri</span>
+              <span class="goals-count">⚽ 5</span>
+          </div>
+          <div class="stat-item" style="padding-top: 5px;">
+              <span class="stat-num draw">1</span>
+              <span class="stat-label">Empate</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-num win">1</span>
+              <span class="stat-label">Facu</span>
+              <span class="goals-count">⚽ 8</span>
+          </div>
+      </div>
+      <table class="match-table">
+          <thead><tr><th width="35%">Rodri</th><th width="30%">Global</th><th width="35%">Facu</th></tr></thead>
+          <tbody>
+              <tr>
+                  <td><strong>Rodri</strong><span class="team-name">Barcelona</span></td>
+                  <td><span class="score-box">2 - 5</span></td>
+                  <td><strong>Facu</strong><span class="team-name">R. Madrid</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Rodri</strong><span class="team-name">R. Madrid</span></td>
+                  <td><span class="score-box">2 - 2</span></td>
+                  <td><strong>Facu</strong><span class="team-name">PSG</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Rodri</strong><span class="team-name">R. Madrid</span></td>
+                  <td><span class="score-box">3 - 1</span></td>
+                  <td><strong>Facu</strong><span class="team-name">PSG</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+
+  <button class="accordion">LUCIANO vs FACU</button>
+  <div class="panel">
+      <div class="stats-summary">
+          <div class="stat-item">
+              <span class="stat-num win">0</span>
+              <span class="stat-label">Lucho</span>
+              <span class="goals-count">⚽ 10</span>
+          </div>
+          <div class="stat-item" style="padding-top: 5px;">
+              <span class="stat-num draw">1</span>
+              <span class="stat-label">Empate</span>
+          </div>
+          <div class="stat-item">
+              <span class="stat-num win">2</span>
+              <span class="stat-label">Facu</span>
+              <span class="goals-count">⚽ 14</span>
+          </div>
+      </div>
+      <table class="match-table">
+          <thead><tr><th width="35%">Lucho</th><th width="30%">Global</th><th width="35%">Facu</th></tr></thead>
+          <tbody>
+               <tr>
+                  <td><strong>Lucho</strong><span class="team-name">PSG</span></td>
+                  <td><span class="score-box">5 - 8</span></td>
+                  <td><strong>Facu</strong><span class="team-name">R. Madrid</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Lucho</strong><span class="team-name">Liverpool</span></td>
+                  <td><span class="score-box">1 - 1</span></td>
+                  <td><strong>Facu</strong><span class="team-name">PSG</span></td>
+              </tr>
+              <tr>
+                  <td><strong>Lucho</strong><span class="team-name">Liverpool</span></td>
+                  <td><span class="score-box">4 - 5</span></td>
+                  <td><strong>Facu</strong><span class="team-name">PSG</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+
+  <a href="index.html" class="back-btn">⬅ Volver al Menú</a>
+
+<script>
+  var acc = document.getElementsByClassName("accordion");
+  var i;
+  for (i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var panel = this.nextElementSibling;
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+      } 
+    });
+  }
+</script>
+
+</body>
+</html>
