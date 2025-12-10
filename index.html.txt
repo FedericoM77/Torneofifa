@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Torneo FIFA - Selección de Jugador</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    color: #d4af37;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 40px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+  }
+
+  .logo-area {
+      font-size: 60px;
+      margin-bottom: 20px;
+  }
+
+  .menu-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .player-btn {
+    background: linear-gradient(90deg, #b88a1e, #ffce47);
+    border: none;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+    display: block; /* Para que funcione como bloque */
+  }
+
+  .player-btn:hover {
+    transform: scale(1.05);
+    background: #fff;
+  }
+
+  p { opacity: 0.6; margin-top: 50px; font-size: 12px; }
+
+</style>
+</head>
+<body>
+
+  <div class="logo-area">🏆</div>
+  
+  <h1>Torneo FIFA<br>Virgolandia 2025</h1>
+
+  <div class="menu-container">
+    <a href="luciano.html" class="player-btn">Ver a LUCIANO</a>
+    
+    <a href="colo.html" class="player-btn">Ver a EL COLO</a>
+    
+    </div>
+
+  <p>Selecciona un jugador para ver su carta</p>
+
+</body>
+</html>

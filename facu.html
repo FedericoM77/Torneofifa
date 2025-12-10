@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Carta FUT: Versión Barra Humildad</title>
+<style>
+  /* --- ESTILOS GENERALES --- */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    perspective: 1500px;
+    overflow: hidden; 
+  }
+
+  /* --- CONTENEDOR PRINCIPAL --- */
+  .card-container {
+    width: 420px;
+    height: 920px; 
+    position: relative;
+    cursor: pointer;
+    transform: scale(0.80); 
+  }
+
+  .card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-radius: 30px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+  }
+
+  .card.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  /* --- DORSO --- */
+  .card-back {
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    border: 4px solid #d4af37;
+    color: #d4af37;
+    justify-content: center;
+    text-align: center;
+  }
+  .card-back h1 {
+      font-size: 50px; margin: 0; text-transform: uppercase; letter-spacing: 4px;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  }
+
+  /* --- FRENTE --- */
+  .card-front {
+    background: radial-gradient(circle at 50% 20%, #fff8db, #eecf6e, #b88a1e);
+    transform: rotateY(180deg);
+    border: 6px solid #f9f1cc;
+    color: #3e3008;
+  }
+
+  .texture {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 2px, transparent 2px, transparent 10px);
+      z-index: 0; pointer-events: none;
+  }
+
+  /* --- CABECERA --- */
+  .header-section {
+      position: relative;
+      width: 100%;
+      height: 190px;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      margin-top: 25px;
+  }
+
+  .left-badges {
+      position: absolute; left: 35px; top: 10px;
+      display: flex; flex-direction: column; align-items: center;
+  }
+  .rating { font-size: 55px; font-weight: 900; line-height: 1; color: #2b2208; }
+  .position { font-size: 24px; font-weight: bold; border-bottom: 2px solid rgba(43, 34, 8, 0.2); }
+  .flag {
+      width: 45px; height: 30px; margin-top: 5px;
+      background: linear-gradient(to bottom, #75aadb 33%, #fff 33%, #fff 66%, #75aadb 66%);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  }
+
+  .photo-frame {
+      width: 170px; height: 170px;
+      border-radius: 50%;
+      border: 6px solid rgba(255,255,255,0.8);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      overflow: hidden;
+      background: #000;
+      position: relative; left: 10px;
+  }
+  .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+  /* --- NOMBRE --- */
+  .name-section {
+      text-align: center; z-index: 10; margin-bottom: 10px; width: 90%;
+  }
+  .nickname {
+      font-size: 40px; font-weight: 900; text-transform: uppercase;
+      margin: 5px 0 0 0; letter-spacing: -1px; text-shadow: 1px 1px 0px rgba(255,255,255,0.8);
+  }
+  .quote {
+      font-size: 13px; font-style: italic; background: rgba(255,255,255,0.4);
+      padding: 4px 15px; border-radius: 12px; display: inline-block; margin-top: 5px; color: #1a1a1a;
+  }
+
+  /* --- PANEL DE DATOS --- */
+  .stats-panel {
+      width: 90%;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 20px;
+      padding: 15px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 8px; 
+      z-index: 10;
+      box-shadow: 0 5px 15px rgba(163, 126, 44, 0.1);
+      flex-grow: 1; 
+      margin-bottom: 25px;
+  }
+
+  /* Filas */
+  .stat-row {
+      display: flex; flex-direction: column; align-items: center;
+      border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 5px;
+      width: 100%; /* Asegurar ancho completo para la barra */
+  }
+  .stat-row:last-child { border-bottom: none; }
+  
+  /* Fila doble */
+  .stat-row-split {
+      display: flex; justify-content: space-between; width: 100%;
+      border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 5px;
+      align-items: flex-start; 
+  }
+  .split-item { 
+      width: 49%; 
+      text-align: center; 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+  }
+  .separator { border-right: 1px solid rgba(0,0,0,0.1); }
+
+  /* Estilos Texto */
+  .cat-title {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.5px; color: #8c6a18; margin-bottom: 2px;
+  }
+  .cat-value {
+      font-size: 15px; font-weight: 700; color: #1a1a1a; text-align: center; line-height: 1.2;
+  }
+  .long-text { font-size: 13px; }
+
+  /* Listas */
+  ul.value-list { list-style: none; padding: 0; margin: 0; text-align: center; }
+  ul.value-list li { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 1px; }
+  ul.value-list li::before { content: "•"; color: #8c6a18; margin-right: 4px; }
+
+  /* --- NUEVO: ESTILOS BARRA DE PROGRESO --- */
+  .progress-header {
+      display: flex;
+      justify-content: space-between;
+      width: 85%;
+      margin-bottom: 2px;
+  }
+  .progress-track {
+        width: 85%;
+        height: 16px; 
+        background: rgba(0, 0, 0, 0.15); /* Fondo oscuro del riel */
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid rgba(140, 106, 24, 0.2);
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .progress-fill {
+        height: 100%;
+        /* Gradiente Dorado/Ambar para que combine con la carta */
+        background: linear-gradient(90deg, #b88a1e, #ffce47);
+        /* El efecto Rayado */
+        background-image: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent
+        );
+        background-size: 18px 18px; /* Tamaño de las rayas */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        /* Animación para que las rayas se muevan */
+        animation: stripes 1s linear infinite;
+        border-radius: 6px;
+    }
+    /* Definición de la animación */
+    @keyframes stripes {
+        from { background-position: 0 0; }
+        to { background-position: 18px 0; }
+    }
+
+</style>
+</head>
+<body>
+
+<div class="card-container" onclick="this.querySelector('.card').classList.toggle('flipped')">
+  <div class="card">
+    
+    <div class="card-face card-back">
+      <h1>TORNEO DE FIFA <br>VIRGOLANDIA<br>2025</h1>
+      <p style="margin-top:20px; font-size:14px; opacity:0.8;">CLICK PARA REVELAR</p>
+    </div>
+
+    <div class="card-face card-front">
+        <div class="texture"></div>
+
+        <div class="header-section">
+            <div class="left-badges">
+                <div class="rating">75</div>
+                <div class="position">MC</div>
+                <div class="flag"></div>
+            </div>
+            <div class="photo-frame">
+                <img src="facu.png" alt="Foto">
+            </div>
+        </div>
+
+        <div class="name-section">
+            <div class="nickname">FACUNDO</div>
+            <div class="quote">"Cancelable hasta los huevos"</div>
+        </div>
+
+        <div class="stats-panel">
+
+            <div class="stat-row-split">
+                <div class="split-item separator">
+                    <span class="cat-title">SIGNO</span>
+                    <span class="cat-value">Libra</span>
+                </div>
+                <div class="split-item">
+                    <span class="cat-title">EDAD</span>
+                    <span class="cat-value">32</span>
+                </div>
+            </div>
+
+            <div class="stat-row-split">
+                <div class="split-item separator">
+                    <span class="cat-title">VIRTUDES</span>
+                    <ul class="value-list">
+                        <li>Carisma Puro</li>
+                        <li>Sin Corazon</li>
+                        <li>Facherito</li>
+                    </ul>
+                </div>
+                <div class="split-item">
+                    <span class="cat-title">HOBBIES</span>
+                    <ul class="value-list">
+                        <li>Viajar</li>
+                        <li>Mentir</li>
+                        <li>Mas Mentiras</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stat-row-split">
+                <div class="split-item separator">
+                    <span class="cat-title">RED FLAGS</span>
+                    <ul class="value-list">
+                        <li>Peronistas</li>
+                        <li>Que viva en G.Catan</li>
+                        <li>De Mente Abierta</li>
+                        <li>Piel Oscuras</li>
+                    </ul>
+                </div>
+                <div class="split-item">
+                    <span class="cat-title">ETNIAS BASTARDEADAS</span>
+                    <ul class="value-list">
+                        <li>Discapacitados</li>
+                        <li>Trapitos</li>
+                        <li>Peronchos</li>
+                        <li>Negros</li>
+                        <li>Judios</li>
+                        <li>Down</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="stat-row">
+                <span class="cat-title">PREFERENCIAS</span>
+                <span class="cat-value">Milipilis, o Rubias </span>
+            </div>
+
+            <div class="stat-row">
+                <div class="progress-header">
+                    <span class="cat-title">HUMILDAD</span>
+                    <span class="cat-title" style="color: #1a1a1a;">45%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 45%;"></div>
+                </div>
+            </div>
+            <div class="stat-row">
+                <div class="progress-header">
+                    <span class="cat-title">Comentarios Cancelables</span>
+                    <span class="cat-title" style="color: #1a1a1a;">1000%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+            <div class="stat-row">
+                <span class="cat-title">ESTADO CIVIL</span>
+                <span class="cat-value">Encadenado por su dueña</span>
+            </div>
+
+            <div class="stat-row">
+                <span class="cat-title">NIVEL DE CONQUISTA</span>
+                <span class="cat-value long-text">Elevado, pero chill</span>
+            </div>
+
+        </div> 
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
