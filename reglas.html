@@ -15,7 +15,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100dvh; /* Altura completa móvil */
+    min-height: 100dvh;
     color: #e0e0e0;
     text-align: center;
   }
@@ -28,7 +28,7 @@
     text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
   }
 
-  /* Contenedor tipo "Papel de vidrio" */
+  /* Contenedor principal */
   .rules-container {
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(10px);
@@ -39,51 +39,83 @@
     max-width: 600px;
     margin-bottom: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    text-align: left; /* Texto alineado a la izquierda para leer mejor */
+    text-align: left;
   }
 
   h2 {
     color: #ffce47;
-    font-size: 18px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
+    font-size: 22px;
+    text-align: center;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.5);
+    padding-bottom: 15px;
     margin-top: 0;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    color: #d4af37;
+    font-size: 18px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    border-left: 4px solid #d4af37;
+    padding-left: 10px;
+  }
+
+  h4 {
+    color: #fff;
+    margin: 15px 0 5px 0;
+    font-size: 16px;
+    text-decoration: underline;
+    text-decoration-color: #d4af37;
   }
 
   /* Estilos de Lista */
   ul {
     padding-left: 20px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+    margin-top: 5px;
   }
   li {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     line-height: 1.4;
-    font-size: 15px;
+    font-size: 14px;
+    color: #ccc;
   }
+  li strong { color: #fff; }
   li::marker { color: #d4af37; }
 
   /* Tabla de Puntos */
   .points-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    margin-top: 5px;
     background: rgba(0,0,0,0.2);
     border-radius: 10px;
     overflow: hidden;
   }
   .points-table th, .points-table td {
-    padding: 12px;
+    padding: 10px;
     text-align: center;
     border-bottom: 1px solid rgba(255,255,255,0.05);
   }
   .points-table th {
     background-color: rgba(212, 175, 55, 0.2);
     color: #d4af37;
-    font-size: 14px;
+    font-size: 13px;
     text-transform: uppercase;
   }
   .points-table tr:last-child td { border-bottom: none; }
-  .points-val { font-weight: bold; color: #fff; font-size: 18px; }
+  .points-val { font-weight: bold; color: #fff; font-size: 16px; }
+
+  /* Separador */
+  hr {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #d4af37, transparent);
+      margin: 30px 0;
+  }
 
   /* Botón Volver */
   .back-btn {
@@ -110,6 +142,8 @@
   <div class="rules-container">
     
     <h2>🏆 Sistema de Puntos</h2>
+
+    <h3>👤 Torneos Individuales</h3>
     <table class="points-table">
         <tr>
             <th>Resultado</th>
@@ -133,15 +167,45 @@
         </tr>
     </table>
 
-    <br><br>
-
-    <h2>⚠️ Reglas de Convivencia</h2>
+    <h4>Aclaraciones:</h4>
     <ul>
-        <li><strong>Prohibido hacer tiempo:</strong> Si vas ganando y tocas atrás los últimos 10 min, es penalización.</li>
-        <li><strong>Pausas:</strong> Máximo 2 pausas por partido y solo cuando el balón esté parado.</li>
-        <li><strong>Equipos:</strong> Solo se permiten clubes, nada de selecciones (o lo que ustedes decidan).</li>
-        <li><strong>Gritos:</strong> Se permite gritar los goles en la cara, pero sin contacto físico.</li>
-        <li><strong>VAR:</strong> No hay VAR, lo que cobra la máquina es sagrado (aunque sea robo).</li>
+        <li>Salir campeón sumará además <strong>+1</strong> en el stat general de la carta.</li>
+        <li>Perder la final restará <strong>-0.5</strong> puntos de la carta.</li>
+        <li>Perder un partido por más de 5 goles también restará <strong>-0.5</strong>.</li>
+        <li>Si hay campeonatos con equipos al azar, se decidirá con el equipo el sistema de puntos.</li>
+    </ul>
+
+    <hr>
+
+    <h3>👥 Torneos Dobles</h3>
+    <table class="points-table">
+        <tr>
+            <th>Resultado</th>
+            <th>Puntos</th>
+        </tr>
+        <tr>
+            <td>Victoria</td>
+            <td class="points-val">+3</td>
+        </tr>
+        <tr>
+            <td>Empate</td>
+            <td class="points-val">+1</td>
+        </tr>
+        <tr>
+            <td>Derrota</td>
+            <td class="points-val">0</td>
+        </tr>
+        <tr>
+            <td>Abandono (Rage Quit)</td>
+            <td class="points-val">-1</td>
+        </tr>
+    </table>
+
+    <h4>Aclaraciones:</h4>
+    <ul>
+        <li>Serán 2 partidos (Ida y Vuelta), sumando los goles (Global).</li>
+        <li>Salir campeón sumará <strong>+0.5</strong> en la carta de presentación.</li>
+        <li>Perder el partido restará <strong>-1</strong>.</li>
     </ul>
 
   </div>
