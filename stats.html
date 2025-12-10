@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Estadísticas - Torneo FIFA</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 20px;
+    background-color: #121212;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100dvh;
+    color: #e0e0e0;
+  }
+
+  h1 {
+    color: #d4af37;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+
+  /* --- SISTEMA DE PESTAÑAS (TABS) --- */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .tab-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #d4af37;
+    color: #d4af37;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    flex: 1; /* Para que ocupen el mismo ancho */
+    transition: all 0.3s;
+  }
+
+  .tab-btn.active {
+    background: #d4af37;
+    color: #121212;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+  }
+
+  /* --- CONTENEDORES DE TABLAS --- */
+  .tab-content {
+    display: none; /* Ocultos por defecto */
+    width: 100%;
+    max-width: 600px;
+    animation: fadeIn 0.5s;
+  }
+  .tab-content.active { display: block; } /* Mostrar el activo */
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* --- ESTILOS DE LAS TABLAS --- */
+  .table-wrapper {
+    overflow-x: auto; /* Scroll horizontal en celular */
+    border-radius: 15px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(30, 30, 30, 0.95);
+    min-width: 350px; /* Ancho mínimo para que no se rompa */
+  }
+
+  th {
+    background: linear-gradient(180deg, #b88a1e, #8c6a18);
+    color: #1a1a1a;
+    padding: 12px 8px;
+    font-size: 12px;
+    text-transform: uppercase;
+    position: sticky;
+    top: 0;
+  }
+
+  td {
+    padding: 12px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+    font-size: 14px;
+  }
+
+  /* Colores para posiciones */
+  tr:nth-child(1) td { color: #ffd700; font-weight: bold; } /* 1ro Dorado */
+  tr:nth-child(2) td { color: #c0c0c0; } /* 2do Plateado */
+  tr:nth-child(3) td { color: #cd7f32; } /* 3ro Bronce */
+  
+  /* Columna de Jugador alineada a la izquierda */
+  td:nth-child(2) { text-align: left; padding-left: 15px; } 
+
+  /* Matriz H2H específica */
+  .h2h-table td, .h2h-table th { text-align: center !important; padding: 8px; }
+  .h2h-table td:first-child { font-weight: bold; color: #d4af37; text-align: right !important; }
+  .self-cell { background-color: rgba(255,255,255,0.05); color: transparent; }
+
+  /* Botón Volver */
+  .back-btn {
+    margin-top: 30px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    opacity: 0.7;
+    border-bottom: 1px solid transparent;
+    transition: 0.3s;
+  }
+  .back-btn:hover { opacity: 1; border-color: #fff; }
+
+</style>
+
+<script>
+  function openTab(tabName, btnElement) {
+    // 1. Ocultar todos los contenidos
+    var contents = document.getElementsByClassName("tab-content");
+    for (var i = 0; i < contents.length; i++) {
+      contents[i].classList.remove("active");
+    }
+    // 2. Desactivar todos los botones
+    var btns = document.getElementsByClassName("tab-btn");
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.remove("active");
+    }
+    // 3. Mostrar el seleccionado
+    document.getElementById(tabName).classList.add("active");
+    btnElement.classList.add("active");
+  }
+</script>
+</head>
+<body>
+
+  <h1>Centro de Datos</h1>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="openTab('historico', this)">Histórico</button>
+    <button class="tab-btn" onclick="openTab('h2h', this)">Vs (H2H)</button>
+  </div>
+
+  <div id="historico" class="tab-content active">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Rk</th>
+            <th>Leyenda</th>
+            <th>Títulos 🏆</th>
+            <th>Win %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>FEDE</td>
+            <td>2</td>
+            <td>66%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>RODRIGO</td>
+            <td>1</td>
+            <td>33%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>FACU</td>
+            <td>0</td>
+            <td>0%</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>LUCIANO</td>
+            <td>0</td>
+            <td>30%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="h2h" class="tab-content">
+    <div class="table-wrapper">
+      <table class="h2h-table">
+        <thead>
+          <tr>
+            <th style="background:transparent; border:none;"></th> 
+            <th>LUC</th>
+            <th>COL</th>
+            <th>FAC</th>
+            <th>FED</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>LUC</td>
+            <td class="self-cell">-</td>
+            <td style="color:#4caf50;">--</td> 
+            <td style="color:#4caf50;">--</td>
+            <td style="color:#4caf50;">--</td>
+          </tr>
+          <tr>
+            <td>COL</td>
+            <td style="color:#f44336;">--</td> 
+            <td class="self-cell">-</td>
+            <td style="color:#4caf50;">--</td>
+            <td style="color:#ffffff;">--</td> 
+          </tr>
+          <tr>
+            <td>FAC</td>
+            <td style="color:#f44336;">--</td>
+            <td style="color:#f44336;">--</td>
+            <td class="self-cell">-</td>
+            <td style="color:#4caf50;">--</td>
+          </tr>
+          <tr>
+            <td>FED</td>
+            <td style="color:#f44336;">--</td>
+            <td style="color:#ffffff;">--</td>
+            <td style="color:#f44336;">--</td>
+            <td class="self-cell">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size: 12px; margin-top:10px; opacity:0.6;">(Verde = Paternidad / Rojo = Hijo)</p>
+  </div>
+
+  <a href="index.html" class="back-btn">⬅ Volver al Menú</a>
+
+</body>
+</html>
