@@ -9,41 +9,18 @@
 
   body {
     margin: 0;
-    padding: 20px; /* Margen de seguridad para que nada pegue en los bordes */
+    padding: 20px;
     background-color: #121212;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Usamos dvh para que se adapte a las barras del navegador móvil */
-    min-height: 100dvh; 
+    min-height: 100dvh; /* Altura dinámica para móviles */
     color: #d4af37;
     text-align: center;
-    /* Permitimos scroll si la pantalla es muy pequeña verticalmente */
     overflow-y: auto; 
     overflow-x: hidden;
-  }
- /* Estilo para el botón de reglas (Diferente a los jugadores) */
-  .rules-btn {
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: #fff;
-    padding: 15px;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    border-radius: 12px;
-    text-decoration: none;
-    display: block;
-    margin-top: 25px; /* Separación de los jugadores */
-    letter-spacing: 1px;
-    transition: all 0.3s;
-  }
-  
-  .rules-btn:active {
-    background: rgba(255, 255, 255, 0.1);
-    transform: scale(0.98);
   }
 
   /* Animación de entrada suave */
@@ -51,8 +28,7 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
   h1 {
-    /* El tamaño de letra se adapta: mínimo 30px, preferido 8% del ancho, máximo 45px */
-    font-size: clamp(30px, 8vw, 45px);
+    font-size: clamp(30px, 8vw, 45px); /* Texto adaptable */
     text-transform: uppercase;
     letter-spacing: 3px;
     margin-bottom: 15px;
@@ -65,7 +41,7 @@
       font-size: 16px;
       color: #fff;
       opacity: 0.8;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
       max-width: 90%;
       line-height: 1.5;
   }
@@ -80,22 +56,22 @@
       50% { transform: translateY(-15px); }
   }
 
-  /* --- BOTONES --- */
+  /* --- BOTONES DEL MENÚ --- */
   .menu-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 100%;
-    max-width: 340px; /* Ancho máximo para que no se vea gigante en Tablet/PC */
-    padding-bottom: 20px; /* Espacio extra abajo para scrolling */
+    max-width: 340px;
+    padding-bottom: 40px;
   }
 
-  /* Botón Principal (Con efectos táctiles) */
+  /* Botón Principal (Dorado) */
   .main-btn {
     background: linear-gradient(135deg, #b88a1e, #ffce47, #b88a1e);
     background-size: 200% auto;
     border: none;
-    padding: 20px 30px; /* Botón grande para dedos */
+    padding: 20px 30px;
     font-size: 20px;
     font-weight: 800;
     color: #1a1a1a;
@@ -103,21 +79,46 @@
     border-radius: 50px;
     cursor: pointer;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    transition: transform 0.1s, box-shadow 0.1s; /* Transición rápida para tacto */
+    transition: transform 0.1s;
     animation: shine 3s infinite linear;
     text-decoration: none;
-    touch-action: manipulation; /* Mejora la respuesta al toque */
-    -webkit-tap-highlight-color: transparent; /* Quita el recuadro azul en Android */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    width: 100%;
+    max-width: 300px;
   }
-  
-  /* Efecto al presionar con el dedo */
   .main-btn:active { transform: scale(0.95); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+
+  /* Botón Campeón (Nuevo) */
+  .champ-start-btn {
+      background: transparent;
+      border: 2px solid #ffce47;
+      color: #ffce47;
+      padding: 15px 25px;
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: 0.3s;
+      text-decoration: none;
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 300px;
+      -webkit-tap-highlight-color: transparent;
+  }
+  .champ-start-btn:active { transform: scale(0.95); background: rgba(255, 206, 71, 0.1); }
 
   /* Botones de Jugadores */
   .player-btn {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid #d4af37;
-    padding: 18px; /* Buena zona de toque */
+    padding: 18px;
     font-size: 18px;
     font-weight: bold;
     color: #d4af37;
@@ -128,28 +129,93 @@
     display: block;
     -webkit-tap-highlight-color: transparent;
   }
-  
-  /* Efecto al presionar */
-  .player-btn:active {
-    background: #d4af37;
-    color: #1a1a1a;
-    transform: scale(0.98);
+  .player-btn:active { background: #d4af37; color: #1a1a1a; transform: scale(0.98); }
+
+  /* Botones Extra (Reglas, Stats, Historial) */
+  .rules-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    padding: 15px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 12px;
+    text-decoration: none;
+    display: block;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .rules-btn:active { background: rgba(255, 255, 255, 0.1); transform: scale(0.98); border-color: #fff; }
+
+  /* --- ANIMACIÓN DEL CAMPEÓN (Overlay) --- */
+  #champion-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 2000;
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.5s ease-in-out;
+      overflow: hidden;
+  }
+  #champion-overlay.show { opacity: 1; pointer-events: all; cursor: pointer; }
+
+  .burst-light {
+      position: absolute;
+      width: 200vmax; height: 200vmax;
+      background: radial-gradient(circle, rgba(255, 206, 71, 0.5) 0%, transparent 60%);
+      animation: rotateBurst 20s linear infinite;
+      opacity: 0; transition: opacity 1s 0.3s;
+  }
+  #champion-overlay.show .burst-light { opacity: 1; }
+
+  .champion-reveal-container {
+      position: relative; z-index: 2001;
+      transform: scale(0) rotate(-15deg);
+      opacity: 0;
+      transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto rebote */
+      transition-delay: 0.1s;
+      display: flex; flex-direction: column; align-items: center;
+  }
+  #champion-overlay.show .champion-reveal-container { transform: scale(1) rotate(0deg); opacity: 1; }
+
+  .champion-img-style {
+      width: 85vw; /* Casi todo el ancho del celular */
+      max-width: 350px;
+      height: auto;
+      border-radius: 25px;
+      box-shadow: 0 0 60px rgba(255, 206, 71, 0.6), 0 0 20px rgba(255, 255, 255, 0.8);
+      border: 4px solid #fff;
   }
 
-  /* ESTADOS */
+  /* UTILIDADES */
   .hidden { display: none !important; }
+  .divider { height: 1px; background: rgba(255,255,255,0.1); margin: 10px 0; }
 
   @keyframes shine { to { background-position: 200% center; } }
+  @keyframes rotateBurst { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
 </style>
 
 <script>
     function mostrarJugadores() {
-        // Efecto de vibración si el celular lo permite (Feedback háptico)
         if (navigator.vibrate) { navigator.vibrate(50); }
-
         document.getElementById('seccion-bienvenida').classList.add('hidden');
         document.getElementById('seccion-lista').classList.remove('hidden');
         document.getElementById('seccion-lista').classList.add('fade-in');
+        // Scroll arriba por si acaso
+        window.scrollTo(0,0);
+    }
+
+    function mostrarCampeon() {
+        if (navigator.vibrate) { navigator.vibrate(100); }
+        document.getElementById('champion-overlay').classList.add('show');
+    }
+
+    function cerrarCampeon() {
+        document.getElementById('champion-overlay').classList.remove('show');
     }
 </script>
 </head>
@@ -165,25 +231,40 @@
       <button onclick="mostrarJugadores()" class="main-btn">
           Conocer Jugadores
       </button>
+
+      <button onclick="mostrarCampeon()" class="champ-start-btn">
+          👑 Ver Campeón Actual
+      </button>
   </div>
 
 
   <div id="seccion-lista" class="hidden menu-container">
       <h2 style="margin-bottom: 25px; text-transform: uppercase; font-size: 24px;">Selecciona tu Guerrero</h2>
       
-      <a href="luciano.html" class="player-btn">Luchi</a>
-      <a href="colo.html" class="player-btn">Rodri</a>
+      <a href="luciano.html" class="player-btn">LUCIANO</a>
+      <a href="colo.html" class="player-btn">RODRIGO</a>
       <a href="facu.html" class="player-btn">FACU</a>
       <a href="fede.html" class="player-btn">FEDE</a>
+
+      <div class="divider"></div>
+
+      <a href="stats.html" class="rules-btn" style="border-color: #d4af37; color: #d4af37;">📊 Ver Estadísticas</a>
+      <a href="historial.html" class="rules-btn" style="border-color: #ffce47; color: #ffce47;">⚔️ Historial Mano a Mano</a>
       <a href="reglas.html" class="rules-btn">📜 Reglas y Puntos</a>
-      <a href="stats.html" class="rules-btn" style="margin-top: 10px;">📊 Ver Estadísticas</a>
-      <a href="historial.html" class="rules-btn" style="margin-top: 10px;">📊 Historial</a>
 
       <p style="margin-top: 30px; font-size: 11px; opacity: 0.5;">EA SPORTS - IT'S IN THE GAME</p>
   </div>
 
+
+  <div id="champion-overlay" onclick="cerrarCampeon()">
+      <div class="burst-light"></div>
+      
+      <div class="champion-reveal-container">
+          <img src="campeon.png" alt="Campeon Actual" class="champion-img-style">
+          
+          <p style="margin-top: 25px; font-size: 12px; color: #fff; text-transform: uppercase; letter-spacing: 2px; opacity: 0.8;">Click para cerrar</p>
+      </div>
+  </div>
+
 </body>
 </html>
-
-
-
